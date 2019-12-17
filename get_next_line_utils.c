@@ -6,7 +6,7 @@
 /*   By: aaugusti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/13 19:36:05 by aaugusti          #+#    #+#             */
-/*   Updated: 2019/12/17 11:11:49 by aaugusti         ###   ########.fr       */
+/*   Updated: 2019/12/17 12:00:40 by aaugusti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,6 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <unistd.h>
-
-/*
-**	This function returns a boolean based on whether the string 'str' contains
-**	the char 'c'.
-**
-**	@param	char *str	"the string to check"
-**	@param	char c		"the char to check for"
-**
-**	@return	bool res	"true or false based on wheter 'c' is in 'buf'"
-*/
 
 bool			gnl_haschar(char *str, char c)
 {
@@ -40,14 +30,6 @@ bool			gnl_haschar(char *str, char c)
 	return (0);
 }
 
-/*
-**	This is a functions which counts the amount of chars in a string until a
-**	'\0' or a '\n' is encountered.
-**
-**	@param	char* str	"the string to get the length of"
-**
-**	@return	size_t res	"the amount of chars before the first '\0' or '\n'.
-*/
 
 size_t			gnl_strlenc(char *str, char c)
 {

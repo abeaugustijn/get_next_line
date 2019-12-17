@@ -6,7 +6,7 @@
 /*   By: aaugusti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/13 19:26:00 by aaugusti          #+#    #+#             */
-/*   Updated: 2019/12/17 11:06:41 by aaugusti         ###   ########.fr       */
+/*   Updated: 2019/12/17 12:25:45 by aaugusti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,18 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-int	get_next_line(int fd, char **line)
+static int	gnl_clearline(char **line, int to_return)
+{
+	char	*res;
+
+	res = (char *)malloc(1);
+	if (!res)
+		return (-1);
+	*line = res;
+	return (to_return);
+}
+
+int			get_next_line(int fd, char **line)
 {
 	static char	buf[BUFFER_SIZE + 1];
 	ssize_t		readret;
@@ -37,7 +48,7 @@ int	get_next_line(int fd, char **line)
 		if (readret < 0)
 			return (-1);
 		if(!readret)
-			return ((int)did_run);
+			return (gnl_clearline(line, (int)did_run));
 		buf[readret] = 0;
 		did_run = true;
 	}

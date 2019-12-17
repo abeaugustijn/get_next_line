@@ -6,7 +6,7 @@
 /*   By: aaugusti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/13 19:36:05 by aaugusti          #+#    #+#             */
-/*   Updated: 2019/12/14 20:00:17 by aaugusti         ###   ########.fr       */
+/*   Updated: 2019/12/17 11:11:49 by aaugusti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,31 +16,50 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-bool	gnl_haschar(char *buf, char c)
+/*
+**	This function returns a boolean based on whether the string 'str' contains
+**	the char 'c'.
+**
+**	@param	char *str	"the string to check"
+**	@param	char c		"the char to check for"
+**
+**	@return	bool res	"true or false based on wheter 'c' is in 'buf'"
+*/
+
+bool			gnl_haschar(char *str, char c)
 {
 	size_t	i;
 
 	i = 0;
-	while (i < BUFFER_SIZE)
+	while (i < BUFFER_SIZE && str[i])
 	{
-		if (buf[i] == c)
+		if (str[i] == c)
 			return (1);
 		i++;
 	}
 	return (0);
 }
 
-size_t	gnl_getlinelen(char *str, size_t n)
+/*
+**	This is a functions which counts the amount of chars in a string until a
+**	'\0' or a '\n' is encountered.
+**
+**	@param	char* str	"the string to get the length of"
+**
+**	@return	size_t res	"the amount of chars before the first '\0' or '\n'.
+*/
+
+size_t			gnl_strlenc(char *str, char c)
 {
 	size_t	res;
 
 	res = 0;
-	while (str[res] != '\n' && res < n)
+	while (str[res] && str[res] != c)
 		res++;
 	return (res);
 }
 
-void	gnl_shiftbuf(char *buf, size_t n)
+int				gnl_shiftbuf(char *buf, size_t n)
 {
 	size_t	start;
 	size_t	i;
@@ -48,7 +67,10 @@ void	gnl_shiftbuf(char *buf, size_t n)
 	start = 0;
 	while (buf[start] != '\n')
 		start++;
-	start++;
+	/*if (*buf != '\n')*/
+		start++;
+	if (!n && buf[0] == '\n')
+		n++;
 	i = 0;
 	while (start < n)
 	{
@@ -61,58 +83,60 @@ void	gnl_shiftbuf(char *buf, size_t n)
 		buf[i] = 0;
 		i++;
 	}
+	return (1);
 }
 
-bool	gnl_pushback(t_string *res, char *buf, size_t n)
+bool			gnl_strlcat(char **res, char *buf)
 {
-	char	*new;
-	size_t	new_len;
+	size_t	og_len;
+	size_t	buf_len;
 	size_t	i;
+	char	*old_res;
 
-	if (!res->str)
-		res->str = gnl_allocate(buf, n, &(res->len));
-	else
+	og_len = gnl_strlenc(*res, '\n');
+	buf_len = gnl_strlenc(buf, '\n');
+	old_res = *res;
+	*res = (char *)malloc((og_len + buf_len + 1) * sizeof(char));
+	if (!*res)
+		return (true);
+	(*res)[og_len + buf_len] = 0;
+	i = 0;
+	while (i < og_len)
 	{
-		new_len = (res->len + gnl_getlinelen(buf, n)) * sizeof(char);
-		new = (char *)malloc(new_len + 1 * sizeof(char));
-		if (!new)
-			return (1);
-		new[new_len] = 0;
-		i = 0;
-		while (i < res->len)
-		{
-			new[i] = res->str[i];
-			i++;
-		}
-		while (i < new_len)
-		{
-			new[i] = buf[i - res->len];
-			i++;
-		}
-		free(res->str);
-		res->str = new;
-		res->len = new_len;
+		(*res)[i] = old_res[i];
+		i++;
 	}
-	return (0);
+	free(old_res);
+	while (i < og_len + buf_len)
+	{
+		(*res)[i] = buf[i - og_len];
+		i++;
+	}
+	return (false);
 }
 
-char	*gnl_allocate(char *buf, size_t n, size_t *res_len)
+char	*gnl_strdup(char *buf, bool *force_return)
 {
 	size_t	len;
+	size_t	i;
 	char	*res;
 
 	len = 0;
-	while (len < n && buf[len] != '\n')
+	while (buf[len] && buf[len] != '\n')
 		len++;
-	res = malloc((len + 1) * sizeof(char));
+	res = (char *)malloc((len + 1) * sizeof(char));
 	if (!res)
 		return (NULL);
 	res[len] = 0;
-	*res_len = len;
-	while(len > 0)
+	i = 0;
+	while (i < len)
 	{
-		res[len - 1] = buf[len - 1];
-		len--;
+		res[i] = buf[i];
+		i++;
 	}
+	if (gnl_haschar(buf, '\n'))
+		*force_return = true;
+	if (len > 0)
+		gnl_shiftbuf(buf, gnl_strlenc(buf, 0));
 	return (res);
 }

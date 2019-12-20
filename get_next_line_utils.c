@@ -6,7 +6,7 @@
 /*   By: aaugusti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/13 19:36:05 by aaugusti          #+#    #+#             */
-/*   Updated: 2019/12/17 12:00:40 by aaugusti         ###   ########.fr       */
+/*   Updated: 2019/12/20 12:44:29 by aaugusti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-bool			gnl_haschar(char *str, char c)
+bool		gnl_haschar(char *str, char c)
 {
 	size_t	i;
 
@@ -30,8 +30,7 @@ bool			gnl_haschar(char *str, char c)
 	return (0);
 }
 
-
-size_t			gnl_strlenc(char *str, char c)
+size_t		gnl_strlenc(char *str, char c)
 {
 	size_t	res;
 
@@ -41,7 +40,7 @@ size_t			gnl_strlenc(char *str, char c)
 	return (res);
 }
 
-int				gnl_shiftbuf(char *buf, size_t n)
+int			gnl_shiftbuf(char *buf, size_t n, int to_return)
 {
 	size_t	start;
 	size_t	i;
@@ -49,8 +48,7 @@ int				gnl_shiftbuf(char *buf, size_t n)
 	start = 0;
 	while (buf[start] != '\n')
 		start++;
-	/*if (*buf != '\n')*/
-		start++;
+	start++;
 	if (!n && buf[0] == '\n')
 		n++;
 	i = 0;
@@ -65,10 +63,10 @@ int				gnl_shiftbuf(char *buf, size_t n)
 		buf[i] = 0;
 		i++;
 	}
-	return (1);
+	return (to_return);
 }
 
-bool			gnl_strlcat(char **res, char *buf)
+bool		gnl_strlcat(char **res, char *buf)
 {
 	size_t	og_len;
 	size_t	buf_len;
@@ -97,7 +95,7 @@ bool			gnl_strlcat(char **res, char *buf)
 	return (false);
 }
 
-char	*gnl_strdup(char *buf, bool *force_return)
+char		*gnl_strdup(char *buf, bool *force_ret)
 {
 	size_t	len;
 	size_t	i;
@@ -117,8 +115,8 @@ char	*gnl_strdup(char *buf, bool *force_return)
 		i++;
 	}
 	if (gnl_haschar(buf, '\n'))
-		*force_return = true;
-	if (len > 0)
-		gnl_shiftbuf(buf, gnl_strlenc(buf, 0));
+		*force_ret = true;
+	else if (len > 0)
+		gnl_shiftbuf(buf, gnl_strlenc(buf, 0), 0);
 	return (res);
 }

@@ -6,7 +6,7 @@
 /*   By: aaugusti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/13 19:26:21 by aaugusti          #+#    #+#             */
-/*   Updated: 2019/12/17 11:06:11 by aaugusti         ###   ########.fr       */
+/*   Updated: 2019/12/20 12:43:03 by aaugusti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 # include <stdbool.h>
 # include <unistd.h>
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
 
 int		get_next_line(int fd, char **line);
 
@@ -26,6 +30,6 @@ bool	gnl_haschar(char *buf, char c);
 char	*gnl_strdup(char *buf, bool *force_return);
 bool	gnl_strlcat(char **res, char *buf);
 size_t	gnl_strlenc(char *str, char c);
-int		gnl_shiftbuf(char *buf, size_t n);
+int		gnl_shiftbuf(char *buf, size_t n, int to_return);
 
 #endif

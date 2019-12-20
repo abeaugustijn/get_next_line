@@ -6,7 +6,7 @@
 /*   By: aaugusti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/13 19:26:00 by aaugusti          #+#    #+#             */
-/*   Updated: 2019/12/20 10:29:06 by aaugusti         ###   ########.fr       */
+/*   Updated: 2019/12/20 12:44:12 by aaugusti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,27 +19,24 @@ int			get_next_line(int fd, char **line)
 	static char	buf[BUFFER_SIZE + 1];
 	ssize_t		readret;
 	char		*res;
-	bool		did_run;
-	bool		force_return;
+	bool		force_ret;
 
 	readret = 0;
-	force_return = false;
-	res = gnl_strdup(buf, &force_return);
-	did_run = false;
+	force_ret = false;
+	res = gnl_strdup(buf, &force_ret);
 	while (true)
 	{
-		if (gnl_strlcat(&res, buf))
+		if (force_ret ? false : gnl_strlcat(&res, buf))
 			return (-1);
 		*line = res;
-		if (gnl_haschar(buf, '\n') || force_return)
-			return (gnl_shiftbuf(buf, gnl_strlenc(buf, 0)));
+		if (gnl_haschar(buf, '\n') || force_ret)
+			return (gnl_shiftbuf(buf, gnl_strlenc(buf, 0), 1));
 		readret = read(fd, buf, BUFFER_SIZE);
 		if (readret < 0)
 			return (-1);
-		if(!readret)
-			return (did_run ? gnl_shiftbuf(buf, gnl_strlenc(buf, 0)) : false);
+		if (!readret)
+			return (gnl_shiftbuf(buf, gnl_strlenc(buf, 0), 0));
 		buf[readret] = 0;
-		did_run = true;
 	}
 	return (1);
 }

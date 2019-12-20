@@ -6,24 +6,13 @@
 /*   By: aaugusti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/13 19:26:00 by aaugusti          #+#    #+#             */
-/*   Updated: 2019/12/17 12:25:45 by aaugusti         ###   ########.fr       */
+/*   Updated: 2019/12/20 10:29:06 by aaugusti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <unistd.h>
 #include <stdlib.h>
-
-static int	gnl_clearline(char **line, int to_return)
-{
-	char	*res;
-
-	res = (char *)malloc(1);
-	if (!res)
-		return (-1);
-	*line = res;
-	return (to_return);
-}
 
 int			get_next_line(int fd, char **line)
 {
@@ -48,7 +37,7 @@ int			get_next_line(int fd, char **line)
 		if (readret < 0)
 			return (-1);
 		if(!readret)
-			return (gnl_clearline(line, (int)did_run));
+			return (did_run ? gnl_shiftbuf(buf, gnl_strlenc(buf, 0)) : false);
 		buf[readret] = 0;
 		did_run = true;
 	}

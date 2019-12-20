@@ -2,7 +2,7 @@ coverage
 .vscode
 *.a
 *.o
-a.out*
+*.out*
 
 .ccls
 

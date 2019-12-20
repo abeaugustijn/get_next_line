@@ -6,7 +6,7 @@
 /*   By: aaugusti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/13 19:36:05 by aaugusti          #+#    #+#             */
-/*   Updated: 2019/12/20 12:44:29 by aaugusti         ###   ########.fr       */
+/*   Updated: 2019/12/20 16:43:38 by aaugusti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int			gnl_shiftbuf(char *buf, size_t n, int to_return)
 	size_t	i;
 
 	start = 0;
-	while (buf[start] != '\n')
+	while (buf[start] != '\n' && start < n)
 		start++;
 	start++;
 	if (!n && buf[0] == '\n')

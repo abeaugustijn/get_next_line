@@ -6,11 +6,11 @@
 /*   By: aaugusti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/13 19:26:00 by aaugusti          #+#    #+#             */
-/*   Updated: 2019/12/21 12:15:01 by aaugusti         ###   ########.fr       */
+/*   Updated: 2019/12/21 12:17:42 by aaugusti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 #include <unistd.h>
 #include <stdlib.h>
 
@@ -32,7 +32,7 @@ int	gnl_free(void *b, int to_return)
 
 /*
 **	Read a single line from a filedescriptor. The line to be read is stored in
-**	the string pointer 'line'.
+**	the string pointer 'line'. Multiple filedescriptor are supported.
 **
 **	@param {int} fd - the filedescriptor to read from.
 **	@param {char **} line - a pointer to a string where the line will be stored

@@ -6,7 +6,7 @@
 /*   By: aaugusti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/13 19:36:05 by aaugusti          #+#    #+#             */
-/*   Updated: 2019/12/20 16:43:38 by aaugusti         ###   ########.fr       */
+/*   Updated: 2019/12/21 10:32:52 by aaugusti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-bool		gnl_haschar(char *str, char c)
+bool		gnl_hasnewline(char *str)
 {
 	size_t	i;
 
 	i = 0;
 	while (i < BUFFER_SIZE && str[i])
 	{
-		if (str[i] == c)
+		if (str[i] == '\n')
 			return (1);
 		i++;
 	}
@@ -40,12 +40,14 @@ size_t		gnl_strlenc(char *str, char c)
 	return (res);
 }
 
-int			gnl_shiftbuf(char *buf, size_t n, int to_return)
+int			gnl_shiftbuf(char *buf, int to_return)
 {
 	size_t	start;
 	size_t	i;
+	size_t	n;
 
 	start = 0;
+	n = gnl_strlenc(buf, 0);
 	while (buf[start] != '\n' && start < n)
 		start++;
 	start++;
@@ -114,9 +116,9 @@ char		*gnl_strdup(char *buf, bool *force_ret)
 		res[i] = buf[i];
 		i++;
 	}
-	if (gnl_haschar(buf, '\n'))
+	if (gnl_hasnewline(buf))
 		*force_ret = true;
 	else if (len > 0)
-		gnl_shiftbuf(buf, gnl_strlenc(buf, 0), 0);
+		gnl_shiftbuf(buf, 0);
 	return (res);
 }

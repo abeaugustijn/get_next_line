@@ -6,7 +6,7 @@
 /*   By: aaugusti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/13 19:26:00 by aaugusti          #+#    #+#             */
-/*   Updated: 2019/12/20 12:44:12 by aaugusti         ###   ########.fr       */
+/*   Updated: 2019/12/21 10:41:48 by aaugusti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,17 @@ int			get_next_line(int fd, char **line)
 	res = gnl_strdup(buf, &force_ret);
 	while (true)
 	{
-		if (force_ret ? false : gnl_strlcat(&res, buf))
-			return (-1);
+		if (!force_ret)
+			if (gnl_strlcat(&res, buf))
+				return (-1);
 		*line = res;
-		if (gnl_haschar(buf, '\n') || force_ret)
-			return (gnl_shiftbuf(buf, gnl_strlenc(buf, 0), 1));
+		if (gnl_hasnewline(buf) || force_ret)
+			return (gnl_shiftbuf(buf, 1));
 		readret = read(fd, buf, BUFFER_SIZE);
 		if (readret < 0)
 			return (-1);
 		if (!readret)
-			return (gnl_shiftbuf(buf, gnl_strlenc(buf, 0), 0));
+			return (gnl_shiftbuf(buf, 0));
 		buf[readret] = 0;
 	}
 	return (1);

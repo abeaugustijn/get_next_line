@@ -6,7 +6,7 @@
 /*   By: aaugusti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/13 19:26:21 by aaugusti          #+#    #+#             */
-/*   Updated: 2019/12/21 10:32:28 by aaugusti         ###   ########.fr       */
+/*   Updated: 2019/12/21 11:44:49 by aaugusti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,6 @@ char	*gnl_strdup(char *buf, bool *force_return);
 bool	gnl_strlcat(char **res, char *buf);
 size_t	gnl_strlenc(char *str, char c);
 int		gnl_shiftbuf(char *buf, int to_return);
+int		gnl_free(void *b, int to_return);
 
 #endif

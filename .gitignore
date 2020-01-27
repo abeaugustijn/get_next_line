@@ -8,7 +8,7 @@ coverage
 
 pft/
 test.c
-Makefile
 *test*
 *main*
 debug*
+bonus
